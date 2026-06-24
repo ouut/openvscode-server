@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  openvscode-server:
+    image: gitpod/openvscode-server:latest
+    container_name: openvscode-server
+    # 自动重启策略：除非手动停止，否则服务器重启或容器崩溃时会自动重启
+    restart: unless-stopped
+    ports:
+      - "80:3000"
+    environment:
+      # 【重要】为了避免网页端写代码时产生权限问题，
+      # 这里会将容器内运行用户的 UID 和 GID 映射为你本地当前的登录用户。
+      - PUID=${MY_UID}
+      - PGID=${MY_GID}
+    volumes:
+      # 将当前用户的整个家目录（~）挂载到容器内的工作空间
+      - ${HOME}:/home/workspace:cached
